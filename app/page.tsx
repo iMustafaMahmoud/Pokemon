@@ -3,6 +3,8 @@ import { PokemonAPI } from "../services/pokemon-api";
 import { Metadata } from "next";
 import { Hydrate } from "./providers/Hydrate";
 import HomeClient from "./HomeClient";
+import { Suspense } from "react";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export const metadata: Metadata = {
   title: "Pokémon Browser - Discover and Explore Pokémon",
@@ -31,7 +33,15 @@ export default async function Home() {
 
   return (
     <Hydrate state={dehydratedState}>
-      <HomeClient />
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <LoadingSpinner size="lg" />
+          </div>
+        }
+      >
+        <HomeClient />
+      </Suspense>
     </Hydrate>
   );
 }
